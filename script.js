@@ -10,7 +10,6 @@ canvas.height = rows * cellSize;
 
 let grid = createEmptyGrid();
 let running = false;
-let animationId = null;
 let frameCount = 0;
 
 function createEmptyGrid() {
@@ -34,11 +33,9 @@ function countNeighbors(g, x, y) {
   for (let dy = -1; dy <= 1; dy++) {
     for (let dx = -1; dx <= 1; dx++) {
       if (dx === 0 && dy === 0) continue;
-      const ny = y + dy;
-      const nx = x + dx;
-      if (ny >= 0 && ny < rows && nx >= 0 && nx < cols) {
-        count += g[ny][nx];
-      }
+      const ny = (y + dy + rows) % rows;
+      const nx = (x + dx + cols) % cols;
+      count += g[ny][nx];
     }
   }
   return count;
@@ -67,7 +64,7 @@ function loop() {
     step();
   }
   if (running) {
-    animationId = requestAnimationFrame(loop);
+    requestAnimationFrame(loop);
   }
 }
 
@@ -93,6 +90,17 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   running = false;
   document.getElementById('playPauseBtn').textContent = 'Play';
   grid = createEmptyGrid();
+  drawGrid();
+});
+
+document.getElementById('randomizeBtn').addEventListener('click', () => {
+  const density = parseInt(document.getElementById('densitySlider').value) / 100;
+  grid = createEmptyGrid();
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      grid[y][x] = Math.random() < density ? 1 : 0;
+    }
+  }
   drawGrid();
 });
 
