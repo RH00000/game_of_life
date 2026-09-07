@@ -104,4 +104,16 @@ document.getElementById('randomizeBtn').addEventListener('click', () => {
   drawGrid();
 });
 
+const speedSlider = document.getElementById('speedSlider');
+const speedValue = document.getElementById('speedValue');
+speedSlider.addEventListener('input', () => {
+  speedValue.textContent = speedSlider.value;
+});
+
+const densitySlider = document.getElementById('densitySlider');
+const densityValue = document.getElementById('densityValue');
+densitySlider.addEventListener('input', () => {
+  densityValue.textContent = densitySlider.value;
+});
+
 drawGrid();
