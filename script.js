@@ -1,9 +1,9 @@
 const canvas = document.getElementById('grid');
 const ctx = canvas.getContext('2d');
 
-const cols = 60;
-const rows = 40;
-const cellSize = 15;
+const cols = 100;
+const rows = 70;
+const cellSize = 10;
 
 canvas.width = cols * cellSize;
 canvas.height = rows * cellSize;
@@ -11,6 +11,7 @@ canvas.height = rows * cellSize;
 let grid = createEmptyGrid();
 let running = false;
 let frameCount = 0;
+let stepCount = 0;
 
 function createEmptyGrid() {
   return Array.from({ length: rows }, () => new Array(cols).fill(0));
@@ -54,6 +55,8 @@ function step() {
     }
   }
   grid = next;
+  stepCount++;
+  document.getElementById('stepCounter').textContent = `Step: ${stepCount}`;
   drawGrid();
 }
 
@@ -90,6 +93,8 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   running = false;
   document.getElementById('playPauseBtn').textContent = 'Play';
   grid = createEmptyGrid();
+  stepCount = 0;
+  document.getElementById('stepCounter').textContent = `Step: 0`;
   drawGrid();
 });
 
@@ -101,6 +106,8 @@ document.getElementById('randomizeBtn').addEventListener('click', () => {
       grid[y][x] = Math.random() < density ? 1 : 0;
     }
   }
+  stepCount = 0;
+  document.getElementById('stepCounter').textContent = `Step: 0`;
   drawGrid();
 });
 
